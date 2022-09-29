@@ -1,4 +1,3 @@
-import { Button, Progress } from '@chakra-ui/react'
 import { useAuth } from '../contexts/AuthContext'
 
 export default function Login() {
@@ -15,14 +14,14 @@ export default function Login() {
   if (user?.displayName) {
     return (<>
       <div>User: {user?.displayName}</div>
-      <Button onClick={handleSignOut}>Sign Out</Button>
+      <button className="btn btn-secondary" onClick={handleSignOut}>Sign Out</button>
     </>)
   }
   else if (!user?.displayName) {
     return (<>
-      <Button onClick={handleGoogleSignIn}>Sign In</Button>
+      <button className="btn btn-primary" onClick={handleGoogleSignIn}>Sign In</button>
     </>)
   }
 
-  return <Progress />
+  return <div>...</div>
 }
