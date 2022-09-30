@@ -31,7 +31,7 @@ export default function Header() {
         </div>
         {!!user?.displayName
           ? <>
-            <div className="text-white pr-4">{user.displayName}</div>
+            <div className="text-white pr-4 invisible sm:visible">{user.displayName}</div>
             <div className="dropdown dropdown-end">
 
               <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
