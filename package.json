@@ -16,13 +16,16 @@
     "firebase": "^9.10.0",
     "framer-motion": "^7.4.0",
     "react": "^18.2.0",
+    "react-cookie": "^4.1.1",
     "react-dom": "^18.2.0",
+    "react-headroom": "^3.2.1",
     "react-redux": "^8.0.4",
     "theme-change": "^2.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
+    "@types/react-headroom": "^2.2.2",
     "@vitejs/plugin-react": "^2.1.0",
     "autoprefixer": "^10.4.12",
     "postcss": "^8.4.16",

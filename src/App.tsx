@@ -1,25 +1,31 @@
 import './App.css'
 import AuthContextProvider from './contexts/AuthContext'
-import Login from './pages/login'
 import { themeChange } from 'theme-change'
 import { useEffect } from 'react'
-import { useAppDispatch, useAppSelector } from './app/hooks'
-import { increment, decrement } from './features/counter/counterSlice'
+import Header from './components/Header'
+import { useAppDispatch } from './app/hooks'
+import { setActiveUser, setLogoutState } from './features/user/userSlice'
+import { useCookies } from "react-cookie"
 
 function App() {
-  const count = useAppSelector(state => state.counter.value)
   const dispatch = useAppDispatch()
+  const [cookies] = useCookies(['user'])
 
-  function handleIncrement() {
-    dispatch(increment())
-  }
-
-  function handleAddAmount() {
-    dispatch(decrement())
+  /**
+   * @description If the user is logged in and saved in the cookie, then the user is set in the redux store
+   */
+  function _persistUser() {
+    cookies.user
+      ? dispatch(setActiveUser({
+        displayName: cookies.user.displayName,
+        photoURL: cookies.user.photoURL
+      }))
+      : dispatch(setLogoutState())
   }
 
   useEffect(() => {
     themeChange(false)
+    _persistUser()
   }, [])
 
   return <AuthContextProvider>
@@ -30,14 +36,7 @@ function App() {
       <option value="dark">dark</option>
       <option value="mytheme">mytheme</option>
     </select> */}
-    <Login />
-    <div className="btn btn-accent" onClick={handleAddAmount}>
-      Decrement {count}
-    </div>
-    <div className="btn btn-primary" onClick={handleIncrement}>
-      Increment {count}
-    </div>
-
+    <Header />
   </AuthContextProvider>
 }
 
