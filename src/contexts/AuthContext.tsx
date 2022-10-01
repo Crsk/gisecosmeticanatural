@@ -1,10 +1,14 @@
-import { onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth"
+import { onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut, updateCurrentUser, UserCredential } from "firebase/auth"
 import { createContext, useContext, useEffect } from "react"
 import { auth } from "../utils/firebase"
-import { User } from "@firebase/auth-types"
+import { User as FirebaseUser } from "@firebase/auth-types"
 import { setActiveUser, setLogoutState } from "../features/user/userSlice"
 import { useDispatch } from "react-redux"
 import { useCookies } from "react-cookie"
+import { upsertUser } from '../data/users/services/userService'
+import { IUser } from "../data/users/models/user.interface"
+import { User } from "../data/users/models/user.class"
+
 export const AuthContext = createContext<{ googleSignIn: () => void; logout: () => void; }>({ googleSignIn: () => { }, logout: () => { } })
 
 export default function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -12,11 +16,18 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const unsubsscribe = onAuthStateChanged(auth, currentUser => _registerUser(currentUser as User))
+    const unsubsscribe = onAuthStateChanged(auth, currentUser => _registerUser(currentUser as FirebaseUser))
     return () => unsubsscribe()
   }, [])
 
-  const googleSignIn = async () => await signInWithPopup(auth, new GoogleAuthProvider())
+  /**
+   * Prompts a Google sign in popup
+   */
+  const googleSignIn = async (): Promise<UserCredential> => await signInWithPopup(auth, new GoogleAuthProvider())
+
+  /**
+   * Signs out the user, tells redux to clean the store and removes the cookie
+   */
   const logout = async () => {
     await signOut(auth)
     dispatch(setLogoutState())
@@ -24,16 +35,58 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
   }
 
   /**
-   * @description Register the user in the redux store and in the cookie
+   * Register the user in the redux store and the cookie
+   * @param firebaseUser - The user that Google Auth returns after a successful login
    */
-  const _registerUser = (user: User) => {
-    if (!user) return null
+  const _registerUser = async (firebaseUser: FirebaseUser): Promise<void | null> => {
+    if (!firebaseUser) return null
 
+    const user = _convertUser(firebaseUser)
+    _dispatchUser(user)
+    _persistUser(user)
+    _upsertUser(user)
+  }
+
+  /**
+   * Converts the Firebase user to User class instance
+   * @param firebaseUser - The user that Google Auth returns after a successful login
+   * @returns An instance of {@link User}
+   */
+  const _convertUser = (firebaseUser: FirebaseUser): User => {
+    const userModel: IUser = {
+      uid: firebaseUser.uid,
+      name: firebaseUser.displayName,
+      photo: firebaseUser.photoURL,
+      isAdmin: false
+    }
+    return new User(userModel)
+  }
+
+  /**
+   * Dispatches the user to the redux store so that it can be used in the app
+   * next time the app is loaded, the user will be loaded from the cookie until the user logs out
+   */
+  const _dispatchUser = (user: User): void => {
     dispatch(setActiveUser({
-      displayName: user.displayName,
-      photoURL: user.photoURL
+      displayName: user.name,
+      photoURL: user.photo
     }))
+  }
+
+  /**
+   * Stores the user in the cookie so that it can be retrieved on page refresh
+   * @param user - The user to be stored in the cookie
+   */
+  const _persistUser = (user: User): void => {
     setCookie('user', user)
+  }
+
+  /**
+   * Updates the database with the user's data
+   * @param firebaseUser - The user to store on database
+   */
+  const _upsertUser = (user: User): void => {
+    upsertUser(user.model)
   }
 
   return (
