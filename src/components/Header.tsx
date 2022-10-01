@@ -42,7 +42,7 @@ export default function Header() {
               </label>
               <ul tabIndex={0} className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52">
                 <li>
-                  <Link to='/new-card'>Crear Shampoo</Link>
+                  <Link to='/new-product'>Crear Producto</Link>
                 </li>
                 <li><a onClick={handleSignOut}>Cerrar Sesión</a></li>
               </ul>
