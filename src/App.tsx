@@ -7,7 +7,7 @@ import { useAppDispatch } from './app/hooks'
 import { setActiveUser, setLogoutState } from './features/user/userSlice'
 import { useCookies } from "react-cookie"
 import { Routes, Route } from 'react-router-dom'
-import Products from './pages/products/Product'
+import Products from './pages/products/Products.page'
 
 function App() {
   useEffect(() => {
