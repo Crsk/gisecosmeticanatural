@@ -38,14 +38,11 @@ function App() {
   }
 
   /**
-   * @description If the user is logged in and saved in the cookie, then the user is set in the redux store
+   * Retreives the User and sets they on redux store in case the user is logged in and saved on the cookie
    */
   function _persistUser() {
     cookies.user
-      ? dispatch(setActiveUser({
-        displayName: cookies.user.displayName,
-        photoURL: cookies.user.photoURL
-      }))
+      ? dispatch(setActiveUser(cookies.user))
       : dispatch(setLogoutState())
   }
 

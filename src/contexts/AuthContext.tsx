@@ -42,8 +42,8 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
     if (!firebaseUser) return null
 
     const user = _convertUser(firebaseUser)
-    _dispatchUser(user)
-    _persistUser(user)
+    _dispatchUser(user.model)
+    _persistUser(user.model)
     _upsertUser(user)
   }
 
@@ -66,24 +66,21 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
    * Dispatches the user to the redux store so that it can be used in the app
    * next time the app is loaded, the user will be loaded from the cookie until the user logs out
    */
-  const _dispatchUser = (user: User): void => {
-    dispatch(setActiveUser({
-      displayName: user.name,
-      photoURL: user.photo
-    }))
+  const _dispatchUser = (userModel: IUser): void => {
+    dispatch(setActiveUser(userModel))
   }
 
   /**
    * Stores the user in the cookie so that it can be retrieved on page refresh
-   * @param user - The user to be stored in the cookie
+   * @param user - The user to be stored on the cookie
    */
-  const _persistUser = (user: User): void => {
-    setCookie('user', user)
+  const _persistUser = (userModel: IUser): void => {
+    setCookie('user', userModel)
   }
 
   /**
    * Updates the database with the user's data
-   * @param firebaseUser - The user to store on database
+   * @param user - The user to store on database
    */
   const _upsertUser = (user: User): void => {
     upsertUser(user.model)

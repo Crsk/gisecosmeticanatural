@@ -1,22 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { IUser } from '../../data/users/models/user.interface';
 
-const initialState = {
-  displayName: null,
-  photoURL: null
+const initialState: IUser = {
+  uid: '',
+  name: null,
+  photo: null,
+  isAdmin: false
 }
 
 const userSlice = createSlice({
   name: "users",
   initialState,
   reducers: {
-    setActiveUser: (state, action) => {
-      state.displayName = action.payload?.displayName
-      state.photoURL = action.payload?.photoURL
-    },
-    setLogoutState: (state) => {
-      state.displayName = null,
-      state.photoURL = null
-    }
+    setActiveUser: (state, action) => Object.assign(state, action.payload),
+    setLogoutState: (state) => Object.assign(state, initialState)
   },
 })
 export const { setActiveUser, setLogoutState } = userSlice.actions
