@@ -1,5 +1,3 @@
-import { Ingredient } from "./ingredient.model"
-
 export interface IProduct {
   id: string
   name: string
@@ -21,11 +19,12 @@ export class Product implements IProduct {
    */
   activeOption: number = 1
 
-  constructor(iProduct: IProduct, public ingredients: Ingredient[] | null = null) {
+
+  constructor(iProduct: IProduct) {
     Object.assign(this, iProduct)
   }
 
-  get model(): IProduct {
+  get interface(): IProduct {
     return {
       id: this.id,
       name: this.name,

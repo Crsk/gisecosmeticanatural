@@ -19,7 +19,7 @@ export class Ingredient implements IIngredient {
     Object.assign(this, iIngredient)
   }
 
-  get model(): IIngredient {
+  get interface(): IIngredient {
     return {
       id: this.id,
       name: this.name,

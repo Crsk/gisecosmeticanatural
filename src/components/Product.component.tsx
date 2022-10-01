@@ -1,15 +1,15 @@
 import { useState } from 'react'
-import { Product as ProductClass } from '../data/product/models/product.model'
+import { ProductWithRefs } from '../data/product/models/productWithRefs.model'
 
-export default function Product(props: { product: ProductClass }) {
-  const [products, setProducts] = useState<ProductClass[]>([])
+export default function Product(props: { product: ProductWithRefs }) {
+  const [products, setProducts] = useState<ProductWithRefs[]>([])
   const { product } = props
 
   /**
    * Toggles the card's text between ingredients and description
    * @param product - The product to toggle its section
    */
-  const _toggleIngredients = (product: ProductClass) => {
+  const _toggleIngredients = (product: ProductWithRefs) => {
     product.activeOption = product.activeOption === 1 ? 2 : 1
     setProducts([...products])
   }

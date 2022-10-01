@@ -6,6 +6,7 @@ import { combineLatest, map, Observable, of, switchMap } from "rxjs"
 import { getCollectionRef } from "../../../utils/base.service"
 import { Product, IProduct } from "../models/product.model"
 import { getSomeIngredients } from "./ingredient.service"
+import { ProductWithRefs } from '../models/productWithRefs.model';
 
 const COLLECTION_NAME = 'products'
 
@@ -21,35 +22,33 @@ export const upsertProduct = (model: IProduct): Promise<void> => {
 }
 
 /**
- * Retreives all products, and also each {@link Product} {@link Ingredient} instances.
- * @returns An array of products, each with its newly initialized {@link Ingredient} intances.
+ * Retreives all {@link ProductWithRefs} from database, (includes all their {@link Ingredient} intances).
+ * @returns An array of {@link ProductWithRefs}, each with its newly initialized {@link Ingredient} intances.
  */
-export const getProducts = (): Observable<Product[]> => {
+export const getProducts = (): Observable<ProductWithRefs[]> => {
   return collectionData(getCollectionRef<IProduct>(COLLECTION_NAME)).pipe(switchMap(iProducts =>
     combineLatest(iProducts.map(iProduct => getProduct(iProduct.id)))
   ))
 }
 
 /**
- * Retrieves a {@link Product} by id, and also each {@link Ingredient} instances.
+ * Retrieves a {@link ProductWithRefs} by id (includes all its {@link Ingredient} intances).
  * @param id - The id of the product.
- * @returns An 'Observable' of a newly initialized {@link Product} instance, also with all its {@link Ingredient} intances.
+ * @returns An 'Observable' of a newly initialized {@link ProductWithRefs} instance.
  */
-export const getProduct = (id: string): Observable<Product> => {
-  return _getProduct(id).pipe(switchMap(product =>
+export const getProduct = (id: string): Observable<ProductWithRefs> => {
+  return getProductWithoutRefs(id).pipe(switchMap(product =>
     combineLatest([product.ingredientIds?.length ? getSomeIngredients(product.ingredientIds) : of([])])
-      .pipe(map(([ingredients]) => new Product(product.model, ingredients)))
+      .pipe(map(([ingredients]) => new ProductWithRefs(product.interface, ingredients)))
   ))
 }
 
 /**
- * Retrieves a {@link Product} by id
- * Note: This does not retrieve the ingredients for the product,
- * if you need the ingredients, use {@link getProduct} instead.
- * @private
+ * Retrieves a {@link Product} by id without references
+ * @see {@link getProduct} to retrieve {@link ProductWithRefs} instead.
  * @param id - The id of the product.
  * @returns a 'Observable' of a newly initialized {@link Product} instance.
  */
-const _getProduct = (id: string): Observable<Product> => {
-  return docData(getDocRef<IProduct>(COLLECTION_NAME, id)).pipe(map(iProduct => new Product(iProduct)))
+const getProductWithoutRefs = (id: string): Observable<Product> => {
+  return docData(getDocRef<IProduct>(COLLECTION_NAME, id)).pipe(map(iProduct => new ProductWithRefs(iProduct)))
 }
