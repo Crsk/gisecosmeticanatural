@@ -6,6 +6,7 @@ export interface IProduct {
   description: string | null
   ingredientIds: string[] | null
   photo: string | null
+  position: number | null
 }
 
 export class Product implements IProduct {
@@ -14,6 +15,11 @@ export class Product implements IProduct {
   ingredientIds: string[] | null = null
   description: string | null = null
   photo: string | null = null
+  position: number | null = null
+  /**
+   * Local-only property used to determine which option is active
+   */
+  activeOption: number = 1
 
   constructor(iProduct: IProduct, public ingredients: Ingredient[] | null = null) {
     Object.assign(this, iProduct)
@@ -25,7 +31,8 @@ export class Product implements IProduct {
       name: this.name,
       description: this.description,
       photo: this.photo,
-      ingredientIds: this.ingredientIds
+      ingredientIds: this.ingredientIds,
+      position: this.position
     }
   }
 }

@@ -1,10 +1,10 @@
 export interface IIngredient {
   id: string
   name: string
+  type: string
   description: string | null
   photo: string | null
   price: number | null
-  type: string | null
 }
 
 export class Ingredient implements IIngredient {
@@ -23,10 +23,10 @@ export class Ingredient implements IIngredient {
     return {
       id: this.id,
       name: this.name,
+      type: this.type,
       description: this.description,
       photo: this.photo,
-      price: this.price,
-      type: this.type
+      price: this.price
     }
   }
 }
