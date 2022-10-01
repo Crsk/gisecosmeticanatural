@@ -7,6 +7,7 @@ import { useAppDispatch } from './app/hooks'
 import { setActiveUser, setLogoutState } from './features/user/userSlice'
 import { useCookies } from "react-cookie"
 import Masonry from 'react-masonry-css'
+import { Routes, Route } from 'react-router-dom'
 
 type Card = { name: string, description?: string, activeOption: 1 | 2, ingredients: string[], image?: string, position?: number }
 
@@ -46,30 +47,37 @@ function App() {
       : dispatch(setLogoutState())
   }
 
-  return <AuthContextProvider>
-    <Header />
-    <div className="mx-4 md:mx-8 lg:mx-12 xl:mx-24">
-      <Masonry breakpointCols={breakpointColumnsObj} className="my-masonry-grid" columnClassName="my-masonry-grid_column">{
-        cards.sort((a, b) => (a.position || Infinity) - (b.position || Infinity)).map((item, index) => {
-          return <div key={index} className="card bg-base-100">
-            {item.image ? <figure><img className='w-full' src={item.image} alt="Shoes" /></figure> : <></>}
-            <div className="card-body">
-              <h2 className="card-title">{item.name}</h2>
-              {item.activeOption === 1 ? <p>{item.description}</p> :
-                <ul className="list-disc">
-                  {item.ingredients.map(ingredient => <li key={ingredient}>{ingredient}</li>)}
-                </ul>
-              }
-              <div className="card-actions justify-end">
-                <button className={item.activeOption === 1 ? 'btn btn-neutral' : 'btn btn-primary'} onClick={() => _toggleIngredients(index)}>
-                  Ingredientes
-                </button>
-              </div>
+  const Home = (): JSX.Element => <div className="mx-4 md:mx-8 lg:mx-12 xl:mx-24">
+    <Masonry breakpointCols={breakpointColumnsObj} className="my-masonry-grid" columnClassName="my-masonry-grid_column">{
+      cards.sort((a, b) => (a.position || Infinity) - (b.position || Infinity)).map((item, index) => {
+        return <div key={index} className="card bg-base-100">
+          {item.image ? <figure><img className='w-full' src={item.image} alt="Shoes" /></figure> : <></>}
+          <div className="card-body">
+            <h2 className="card-title">{item.name}</h2>
+            {item.activeOption === 1 ? <p>{item.description}</p> :
+              <ul className="list-disc">
+                {item.ingredients.map(ingredient => <li key={ingredient}>{ingredient}</li>)}
+              </ul>
+            }
+            <div className="card-actions justify-end">
+              <button className={item.activeOption === 1 ? 'btn btn-neutral' : 'btn btn-primary'} onClick={() => _toggleIngredients(index)}>
+                Ingredientes
+              </button>
             </div>
           </div>
-        })
-      }</Masonry>
-    </div>
+        </div>
+      })
+    }</Masonry>
+  </div>
+  const NewCard = (): JSX.Element => <div className="mx-4 md:mx-8 lg:mx-12 xl:mx-24">New Card</div>
+
+  return <AuthContextProvider>
+    <Header />
+
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/new-card" element={<NewCard />} />
+    </Routes>
   </AuthContextProvider>
 }
 
