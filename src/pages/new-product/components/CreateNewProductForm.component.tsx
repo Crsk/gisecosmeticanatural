@@ -1,13 +1,40 @@
+import { useEffect, useState } from "react"
+import { Subject, takeUntil } from "rxjs"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
+import { Ingredient } from "../../../data/product/models/ingredient.model"
+import { getIngredients } from "../../../data/product/services/ingredient.service"
 import { newProduct } from "../../../features/products/newProductSlice"
+import Select from 'react-select'
+import makeAnimated from 'react-select/animated';
+
+type SelectValue = { label: string, value: string }
 
 export default function CreateNewProductForm() {
   const dispatch = useAppDispatch()
   const iNewProduct = useAppSelector(state => state.newProduct)
+  const [ingredients, setIngredients] = useState<Ingredient[]>([])
+  const unsubscribe: Subject<void> = new Subject()
 
   const handleNewProduct = (prop: string, value: any) => {
     dispatch(newProduct({ [prop]: value }))
   }
+
+  const handleSelectChange = (value: SelectValue[]) => {
+    dispatch(newProduct({
+      ingredientIds: value.map(x => x.value), // Used to save the ingredients on database
+      iIngredients: value.map(x => ({ name: x.label })) // Used to preview the ingredients
+    }))
+  }
+
+  useEffect(() => {
+    getIngredients().pipe(takeUntil(unsubscribe))
+      .subscribe(ingredients => setIngredients(ingredients))
+
+    return () => {
+      unsubscribe.next()
+      unsubscribe.complete()
+    }
+  }, [])
 
   return <div className="flex justify-center flex-col mx-0 md:mx-10 lg:mx-20">
     <div className="form-control w-full">
@@ -50,18 +77,14 @@ export default function CreateNewProductForm() {
       <label className="label">
         <span className="label-text">Ingredientes</span>
       </label>
-      <select multiple className="select select-bordered !h-[200px]">
-        <option value="1">Opcipon 1</option>
-        <option value="2">Opcipon 2</option>
-        <option value="3">Opcipon 3</option>
-        <option value="4">Opcipon 4</option>
-        <option value="5">Opcipon 5</option>
-        <option value="6">Opcipon 6</option>
-        <option value="7">Opcipon 7</option>
-        <option value="8">Opcipon 8</option>
-        <option value="9">Opcipon 9</option>
-        <option value="10">Opcipon 10</option>
-      </select>
+      <Select
+        placeholder=''
+        closeMenuOnSelect={true}
+        isMulti
+        components={makeAnimated()}
+        onChange={e => handleSelectChange(e as SelectValue[])}
+        options={ingredients.map(ingredient => ({ value: ingredient.id, label: ingredient.name }))}
+      />
     </div>
 
     <br />
