@@ -14,7 +14,7 @@ export default function Product(props: { product: ProductWithRefs }) {
     setProducts([...products])
   }
 
-  return <div key={product.id} className="card bg-base-100">
+  return !product.name ? <></> : <div key={product.id} className="card bg-base-100">
     {product.photo ? <figure><img className='w-full' src={product.photo} /></figure> : <></>}
     <div className="card-body">
       <h2 className="card-title">{product.name}</h2>
@@ -22,12 +22,14 @@ export default function Product(props: { product: ProductWithRefs }) {
         <ul className="list-disc">
           {product.ingredients?.map(ingredient => <li key={ingredient.id}>{ingredient.name}</li>)}
         </ul>
+      } {product.ingredientIds?.length ? /** Hide 'Ingredients' button if none */
+        <div className="card-actions justify-end">
+          <button className={product.activeOption === 1 ? 'btn btn-neutral' : 'btn btn-primary'} onClick={() => _toggleIngredients(product)}>
+            Ingredientes
+          </button>
+        </div>
+        : <></>
       }
-      <div className="card-actions justify-end">
-        <button className={product.activeOption === 1 ? 'btn btn-neutral' : 'btn btn-primary'} onClick={() => _toggleIngredients(product)}>
-          Ingredientes
-        </button>
-      </div>
     </div>
   </div>
 }
