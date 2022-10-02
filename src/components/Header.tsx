@@ -26,7 +26,7 @@ export default function Header() {
 
   return (
     <Headroom>
-      <div className="navbar bg-black">
+      <div className="navbar bg-[#bf7b5a]">
         <div className="flex-1">
           <Link className="btn btn-ghost normal-case text-xl text-slate-200" to='/'>Gise Cosmética Natural</Link>
         </div>

@@ -27,7 +27,7 @@ function Products() {
     }
   }, [])
 
-  return !products.length ? <progress className="progress progress-success w-56 ml-4"></progress> : <div className="mx-4 md:mx-8 lg:mx-12 xl:mx-24">
+  return !products.length ? <progress className="progress progress-success w-56 ml-4"></progress> : <div className="mx-4 md:mx-8 lg:mx-12 xl:mx-24 bg-[#edddd3]">
     <Masonry breakpointCols={breakpointColumnsObj} className="my-masonry-grid" columnClassName="my-masonry-grid_column">{
       products.sort((a, b) => (a.position || Infinity) - (b.position || Infinity)).map(product => {
         return <Product key={product.id} product={product} />

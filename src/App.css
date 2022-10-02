@@ -18,6 +18,10 @@
 /* Style your items */
 .my-masonry-grid_column > div {
   margin-top: 32px;
-  background: rgb(239, 239, 239);
+  background: #e3cec4 !important;
   margin-bottom: 30px;
+}
+
+body {
+  background: #edddd3;
 }

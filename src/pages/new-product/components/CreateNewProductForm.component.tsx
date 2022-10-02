@@ -58,7 +58,7 @@ export default function CreateNewProductForm() {
       <input
         type="text"
         placeholder="Nombre"
-        className="input input-bordered"
+        className="input"
         value={iNewProduct.name}
         onChange={e => _handleNewProduct('name', e.target.value)}
       />
@@ -70,7 +70,7 @@ export default function CreateNewProductForm() {
       </label>
       <textarea
         placeholder="Descripción"
-        className="textarea textarea-bordered h-24"
+        className="textarea h-24"
         value={iNewProduct.description || ''}
         onChange={e => _handleNewProduct('description', e.target.value)}
       ></textarea>
@@ -82,7 +82,7 @@ export default function CreateNewProductForm() {
       <input
         type="text"
         placeholder="Foto"
-        className="input input-bordered"
+        className="input"
         value={iNewProduct.photo || ''}
         onChange={e => _handleNewProduct('photo', e.target.value)}
       />
