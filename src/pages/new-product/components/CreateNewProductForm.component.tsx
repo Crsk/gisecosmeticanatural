@@ -1,10 +1,12 @@
-import { IProductWithRefs, ProductWithRefs } from "../../../data/product/models/productWithRefs.model"
+import { useAppDispatch, useAppSelector } from "../../../app/hooks"
+import { newProduct } from "../../../features/products/newProductSlice"
 
 export default function CreateNewProductForm() {
-  const iNewProduct: IProductWithRefs = (new ProductWithRefs()).interfaceWithRefs
+  const dispatch = useAppDispatch()
+  const iNewProduct = useAppSelector(state => state.newProduct)
 
   const handleNewProduct = (prop: string, value: any) => {
-    // TODO    
+    dispatch(newProduct({ [prop]: value }))
   }
 
   return <div className="flex justify-center flex-col mx-0 md:mx-10 lg:mx-20">

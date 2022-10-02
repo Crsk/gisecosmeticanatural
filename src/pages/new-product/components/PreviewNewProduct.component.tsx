@@ -1,7 +1,7 @@
-import { IProductWithRefs, ProductWithRefs } from "../../../data/product/models/productWithRefs.model";
+import { useAppSelector } from "../../../app/hooks";
 
 export default function PreviewNewProduct() {
-  const iNewProduct: IProductWithRefs = (new ProductWithRefs()).interfaceWithRefs
+  const iNewProduct = useAppSelector(state => state.newProduct)
 
   return <div className="bg-blue">
     <div className="flex justify-center flex-col mx-0 md:mx-10 lg:mx-20 mb-20">
