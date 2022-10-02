@@ -9,6 +9,7 @@ import { useCookies } from "react-cookie"
 import { Routes, Route } from 'react-router-dom'
 import Products from './pages/products/Products.page'
 import NewProduct from './pages/new-product/NewProduct.page'
+import { Toaster } from 'react-hot-toast'
 
 function App() {
   useEffect(() => {
@@ -33,6 +34,7 @@ function App() {
       <Route path="/" element={<Products />} />
       <Route path="/new-product" element={<NewProduct />} />
     </Routes>
+    <Toaster />
   </AuthContextProvider>
 }
 

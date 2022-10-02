@@ -15,9 +15,10 @@ const newProductSlice = createSlice({
   name: "newProduct",
   initialState,
   reducers: {
-    newProduct: (state, action) => Object.assign(state, action.payload)
+    newProduct: (state, action) => Object.assign(state, action.payload),
+    resetNewProduct: (state) => initialState
   },
 })
-export const { newProduct } = newProductSlice.actions
+export const { newProduct, resetNewProduct } = newProductSlice.actions
 export default newProductSlice.reducer
 

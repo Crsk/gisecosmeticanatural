@@ -7,6 +7,7 @@ import { getCollectionRef } from "../../../utils/base.service"
 import { Product, IProduct } from "../models/product.model"
 import { getSomeIngredients } from "./ingredient.service"
 import { ProductWithRefs } from '../models/productWithRefs.model';
+import { generateId } from '../../../utils/helper';
 
 const COLLECTION_NAME = 'products'
 
@@ -17,6 +18,7 @@ const COLLECTION_NAME = 'products'
  */
 export const upsertProduct = (model: IProduct): Promise<void> => {
   const db = getFirestore()
+  model.id = model.id || generateId()
   const productRef = doc(db, 'products', model.id)
   return setDoc(productRef, model, { merge: true })
 }
