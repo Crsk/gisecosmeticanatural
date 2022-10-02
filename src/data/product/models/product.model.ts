@@ -20,7 +20,7 @@ export class Product implements IProduct {
   activeOption: number = 1
 
 
-  constructor(iProduct: IProduct) {
+  constructor(iProduct?: IProduct) {
     Object.assign(this, iProduct)
   }
 

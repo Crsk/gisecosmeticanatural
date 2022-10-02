@@ -8,6 +8,7 @@ import { setActiveUser, setLogoutState } from './features/user/userSlice'
 import { useCookies } from "react-cookie"
 import { Routes, Route } from 'react-router-dom'
 import Products from './pages/products/Products.page'
+import NewProduct from './pages/new-product/NewProduct.page'
 
 function App() {
   useEffect(() => {
@@ -26,13 +27,11 @@ function App() {
       : dispatch(setLogoutState())
   }
 
-  const NewCard = (): JSX.Element => <div className="mx-4 md:mx-8 lg:mx-12 xl:mx-24">New Card</div>
-
   return <AuthContextProvider>
     <Header />
     <Routes>
       <Route path="/" element={<Products />} />
-      <Route path="/new-product" element={<NewCard />} />
+      <Route path="/new-product" element={<NewProduct />} />
     </Routes>
   </AuthContextProvider>
 }
