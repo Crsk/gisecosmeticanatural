@@ -7,3 +7,16 @@
 
 <img width="341" alt="Screen Shot 2022-10-02 at 15 04 39" src="https://user-images.githubusercontent.com/6186848/193469041-c7a5d9b5-0011-496e-a906-d7148602fd77.png">
 
+- [x] ~~Login and user percistence~~
+- [x] ~~Responsive layout~~
+- [x] ~~Products page~~
+- [x] ~~Masonry cards with section toggle~~
+- [x] ~~Create new Product~~
+- [ ] ~~Admin access~~ and auth guard redirects
+- [ ] Create Ingredients
+- [ ] Upload photo from gallery
+- [ ] Whatsapp redirect with product info
+- [ ] Edit and delete Products
+- [ ] Edit and delete Ingredients
+- [ ] Re-position Products
+- [ ] Home page
