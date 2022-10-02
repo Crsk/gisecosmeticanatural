@@ -15,7 +15,7 @@ export default function Product(props: { product: ProductWithRefs }) {
   }
 
   return <div key={product.id} className="card bg-base-100">
-    {product.photo ? <figure><img className='w-full' src={product.photo} alt="Shoes" /></figure> : <></>}
+    {product.photo ? <figure><img className='w-full' src={product.photo} /></figure> : <></>}
     <div className="card-body">
       <h2 className="card-title">{product.name}</h2>
       {product.activeOption === 1 ? <p>{product.description}</p> :

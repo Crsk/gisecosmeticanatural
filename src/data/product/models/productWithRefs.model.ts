@@ -10,7 +10,7 @@ export class ProductWithRefs extends Product {
    * Represent a {@link Product} with all of its references initialized.
    * @see {@link Ingredient} reference.
    */
-  constructor(iProduct: IProduct, public ingredients: Ingredient[] | null = null) {
+  constructor(iProduct?: IProduct, public ingredients?: Ingredient[]) {
     super(iProduct)
   }
 
