@@ -20,3 +20,4 @@
 - [ ] Edit and delete Ingredients
 - [ ] Re-position Products
 - [ ] Home page
+- [ ] Create a logo
