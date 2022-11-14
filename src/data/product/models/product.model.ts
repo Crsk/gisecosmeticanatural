@@ -1,4 +1,4 @@
-export interface IProduct {
+export interface ProductJSON {
   id: string
   name: string
   description: string | null
@@ -7,7 +7,7 @@ export interface IProduct {
   position: number | null
 }
 
-export class Product implements IProduct {
+export class Product implements ProductJSON {
   id: string = ''
   name: string = ''
   ingredientIds: string[] | null = null
@@ -20,11 +20,11 @@ export class Product implements IProduct {
   activeOption: number = 1
 
 
-  constructor(iProduct?: IProduct) {
-    Object.assign(this, iProduct)
+  constructor(product?: ProductJSON) {
+    Object.assign(this, product)
   }
 
-  get interface(): IProduct {
+  get json(): ProductJSON {
     return {
       id: this.id,
       name: this.name,

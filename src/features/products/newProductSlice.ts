@@ -1,14 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { IProductWithRefs } from '../../data/product/models/productWithRefs.model';
+import { ProductWithRefsJSON } from '../../data/product/models/productWithRefs.model';
 
-const initialState: IProductWithRefs = {
+const initialState: ProductWithRefsJSON = {
   id: '',
   name: '',
   description: '',
   photo: '',
   position: 0,
   ingredientIds: [],
-  iIngredients: []
+  ingredients: []
 }
 
 const newProductSlice = createSlice({

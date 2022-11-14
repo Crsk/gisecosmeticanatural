@@ -14,7 +14,7 @@ type SelectValue = { label: string, value: string }
 
 export default function CreateNewProductForm() {
   const dispatch = useAppDispatch()
-  const iNewProduct = useAppSelector(state => state.newProduct)
+  const _newProduct = useAppSelector(state => state.newProduct)
   const [ingredients, setIngredients] = useState<Ingredient[]>([])
   const unsubscribe: Subject<void> = new Subject()
 
@@ -25,14 +25,14 @@ export default function CreateNewProductForm() {
   const _handleSelectChange = (value: SelectValue[]) => {
     dispatch(newProduct({
       ingredientIds: value.map(x => x.value), // Used to save the ingredients on database
-      iIngredients: value.map(x => ({ name: x.label })) // Used to preview the ingredients
+      ingredients: value.map(x => ({ name: x.label })) // Used to preview the ingredients
     }))
   }
 
   const _handleProductCreation = async () => {
-    const product = new Product(iNewProduct)
+    const product = new Product(_newProduct)
     await toast.promise(
-      upsertProduct(product.interface), {
+      upsertProduct(product.json), {
       loading: 'Creando...',
       success: <b>Listo!</b>,
       error: <b>Ups! algo anda mal...</b>
@@ -59,7 +59,7 @@ export default function CreateNewProductForm() {
         type="text"
         placeholder="Nombre"
         className="input"
-        value={iNewProduct.name}
+        value={_newProduct.name}
         onChange={e => _handleNewProduct('name', e.target.value)}
       />
     </div>
@@ -71,7 +71,7 @@ export default function CreateNewProductForm() {
       <textarea
         placeholder="Descripción"
         className="textarea h-24"
-        value={iNewProduct.description || ''}
+        value={_newProduct.description || ''}
         onChange={e => _handleNewProduct('description', e.target.value)}
       ></textarea>
     </div>
@@ -83,7 +83,7 @@ export default function CreateNewProductForm() {
         type="text"
         placeholder="Foto"
         className="input"
-        value={iNewProduct.photo || ''}
+        value={_newProduct.photo || ''}
         onChange={e => _handleNewProduct('photo', e.target.value)}
       />
     </div>
@@ -104,7 +104,7 @@ export default function CreateNewProductForm() {
     <br />
     <div className="w-full text-center">
       <button className="btn btn-primary mb-16 w-full" onClick={_handleProductCreation}
-        disabled={!iNewProduct.name}>Crear Producto</button>
+        disabled={!_newProduct.name}>Crear Producto</button>
     </div>
   </div>
 }

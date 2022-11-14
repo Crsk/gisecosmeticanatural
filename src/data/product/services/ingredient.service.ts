@@ -1,20 +1,20 @@
 import { doc, getFirestore, setDoc } from "firebase/firestore"
 import { collectionData, docData } from "rxfire/firestore"
 import { map, Observable } from "rxjs"
-import { Ingredient, IIngredient } from "../models/ingredient.model"
+import { Ingredient, IngredientJSON } from "../models/ingredient.model"
 import { getCollectionRef, getDocRef } from "../../../utils/base.service"
 
 const COLLECTION_NAME = 'ingredients'
 
 /**
  * Updates (if exists) or inserts (if not exists) a {@link Ingredient} into the database.
- * @param model - The {@link IIngredient} model to upsert.
+ * @param json - The {@link IngredientJSON} to upsert.
  * @returns a 'Promise' that resolves when the upsert is complete.
  */
-export const upsertIngredient = (model: IIngredient): Promise<void> => {
+export const upsertIngredient = (json: IngredientJSON): Promise<void> => {
   const db = getFirestore()
-  const ingredientRef = doc(db, COLLECTION_NAME, model.id)
-  return setDoc(ingredientRef, model, { merge: true })
+  const ingredientRef = doc(db, COLLECTION_NAME, json.id)
+  return setDoc(ingredientRef, json, { merge: true })
 }
 
 /**
@@ -22,8 +22,8 @@ export const upsertIngredient = (model: IIngredient): Promise<void> => {
  * @returns An 'Observable' of an array of {@link Ingredient} instances.
  */
 export const getIngredients = (): Observable<Ingredient[]> => {
-  return collectionData(getCollectionRef<IIngredient>(COLLECTION_NAME))
-    .pipe(map(iIngredients => iIngredients.map(iIngredient => new Ingredient(iIngredient))))
+  return collectionData(getCollectionRef<IngredientJSON>(COLLECTION_NAME))
+    .pipe(map(ingredients => ingredients.map(ingredient => new Ingredient(ingredient))))
 }
 
 /**
@@ -32,10 +32,10 @@ export const getIngredients = (): Observable<Ingredient[]> => {
  * @returns An 'Observable' of an array of {@link Ingredient} instances.
  */
 export const getSomeIngredients = (ingredientIds: string[]): Observable<Ingredient[]> => {
-  return collectionData(getCollectionRef<IIngredient>(COLLECTION_NAME))
+  return collectionData(getCollectionRef<IngredientJSON>(COLLECTION_NAME))
     // Firebase supports querying by multiple ids, but they limit it to 10 (TODO use getMany with 10 at a time)
-    .pipe(map(iIngredients => iIngredients.filter(iIngredient => ingredientIds.includes(iIngredient.id))
-      .map(iIngredient => new Ingredient(iIngredient))
+    .pipe(map(ingredients => ingredients.filter(ingredient => ingredientIds.includes(ingredient.id))
+      .map(ingredient => new Ingredient(ingredient))
     ))
 }
 
@@ -45,6 +45,6 @@ export const getSomeIngredients = (ingredientIds: string[]): Observable<Ingredie
  * @returns An 'Observable' of a newly initialized {@link Ingredient} instance.
  */
 export const getIngredient = (id: string): Observable<Ingredient> => {
-  return docData(getDocRef<IIngredient>(COLLECTION_NAME, id))
-    .pipe(map(iIngredient => new Ingredient(iIngredient)))
+  return docData(getDocRef<IngredientJSON>(COLLECTION_NAME, id))
+    .pipe(map(ingredient => new Ingredient(ingredient)))
 }

@@ -12,13 +12,13 @@ function Products() {
   const breakpointColumnsObj = { default: 4, 1536: 4, 1280: 3, 1024: 3, 768: 2, 640: 2, 540: 1 }
   const unsubscribe: Subject<void> = new Subject()
   const dispatch = useAppDispatch()
-  const products = useAppSelector(state => state.products).map(iProduct =>
-    new ProductWithRefs(iProduct, iProduct.iIngredients?.map(iIngredient => new Ingredient(iIngredient)))
+  const products = useAppSelector(state => state.products).map(product =>
+    new ProductWithRefs(product, product.ingredients?.map(ingredient => new Ingredient(ingredient)))
   )
 
   useEffect(() => {
     getProducts().subscribe(products =>
-      dispatch(setProducts(products.map(product => product.interfaceWithRefs)))
+      dispatch(setProducts(products.map(product => product.jsonWithRefs)))
     )
 
     return () => {

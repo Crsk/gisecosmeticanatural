@@ -6,7 +6,7 @@ import { setActiveUser, setLogoutState } from "../features/user/userSlice"
 import { useDispatch } from "react-redux"
 import { useCookies } from "react-cookie"
 import { upsertUser } from '../data/users/services/userService'
-import { IUser } from "../data/users/models/user.interface"
+import { UserJSON } from "../data/users/models/user.interface"
 import { User } from "../data/users/models/user.class"
 
 export const AuthContext = createContext<{ googleSignIn: () => void; logout: () => void; }>({ googleSignIn: () => { }, logout: () => { } })
@@ -53,7 +53,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
    * @returns An instance of {@link User}
    */
   const _convertUser = (firebaseUser: FirebaseUser): User => {
-    const userModel: IUser = {
+    const userModel: UserJSON = {
       uid: firebaseUser.uid,
       name: firebaseUser.displayName,
       photo: firebaseUser.photoURL,
@@ -66,7 +66,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
    * Dispatches the user to the redux store so that it can be used in the app
    * next time the app is loaded, the user will be loaded from the cookie until the user logs out
    */
-  const _dispatchUser = (userModel: IUser): void => {
+  const _dispatchUser = (userModel: UserJSON): void => {
     dispatch(setActiveUser(userModel))
   }
 
@@ -74,7 +74,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
    * Stores the user in the cookie so that it can be retrieved on page refresh
    * @param user - The user to be stored on the cookie
    */
-  const _persistUser = (userModel: IUser): void => {
+  const _persistUser = (userModel: UserJSON): void => {
     setCookie('user', userModel)
   }
 

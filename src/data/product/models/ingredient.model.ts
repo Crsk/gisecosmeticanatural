@@ -1,4 +1,4 @@
-export interface IIngredient {
+export interface IngredientJSON {
   id: string
   name: string
   type: string
@@ -7,7 +7,7 @@ export interface IIngredient {
   price: number | null
 }
 
-export class Ingredient implements IIngredient {
+export class Ingredient implements IngredientJSON {
   id: string = ''
   name: string = ''
   type: string = ''
@@ -15,11 +15,11 @@ export class Ingredient implements IIngredient {
   photo: string | null = null
   price: number | null = null
 
-  constructor(iIngredient: IIngredient) {
-    Object.assign(this, iIngredient)
+  constructor(ingredient: IngredientJSON) {
+    Object.assign(this, ingredient)
   }
 
-  get interface(): IIngredient {
+  get json(): IngredientJSON {
     return {
       id: this.id,
       name: this.name,

@@ -1,16 +1,16 @@
-import { IUser } from "./user.interface"
+import { UserJSON } from "./user.interface"
 
-export class User implements IUser {
+export class User implements UserJSON {
   uid: string = ''
   name: string | null = null
   photo: string | null = null
   isAdmin: boolean = false
 
-  constructor(iUser: IUser) {
-    Object.assign(this, iUser)
+  constructor(user: UserJSON) {
+    Object.assign(this, user)
   }
 
-  get model(): IUser {
+  get model(): UserJSON {
     return {
       uid: this.uid,
       name: this.name,

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { IUser } from '../../data/users/models/user.interface';
+import { UserJSON } from '../../data/users/models/user.interface';
 
-const initialState: IUser = {
+const initialState: UserJSON = {
   uid: '',
   name: null,
   photo: null,

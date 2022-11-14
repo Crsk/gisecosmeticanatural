@@ -1,8 +1,8 @@
-import { IIngredient, Ingredient } from './ingredient.model'
-import { Product, IProduct } from './product.model'
+import { Ingredient, IngredientJSON } from './ingredient.model'
+import { Product, ProductJSON } from './product.model'
 
-export interface IProductWithRefs extends IProduct {
-  iIngredients: IIngredient[] | null
+export interface ProductWithRefsJSON extends ProductJSON {
+  ingredients: IngredientJSON[] | null
 }
 
 export class ProductWithRefs extends Product {
@@ -10,14 +10,14 @@ export class ProductWithRefs extends Product {
    * Represent a {@link Product} with all of its references initialized.
    * @see {@link Ingredient} reference.
    */
-  constructor(iProduct?: IProduct, public ingredients?: Ingredient[]) {
-    super(iProduct)
+  constructor(product?: ProductJSON, public ingredients?: Ingredient[]) {
+    super(product)
   }
 
-  get interfaceWithRefs(): IProductWithRefs {
+  get jsonWithRefs(): ProductWithRefsJSON {
     return {
-      ...super.interface,
-      iIngredients: this.ingredients?.map(ingredient => ingredient.interface) || null
+      ...super.json,
+      ingredients: this.ingredients?.map(ingredient => ingredient.json) || null
     }
   }
 }
