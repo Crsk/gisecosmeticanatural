@@ -15,9 +15,9 @@ export class Product implements ProductJSON {
   photo: string | null = null
   position: number | null = null
   /**
-   * Local-only property used to determine which option is active
+   * temporary property (don't persist it) used to determine which option is active
    */
-  activeOption: number = 1
+  activeOption: 'DESCRIPTION' | 'INGREDIENTS' = 'DESCRIPTION'
 
 
   constructor(product?: ProductJSON) {
